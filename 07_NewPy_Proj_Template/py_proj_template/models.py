@@ -58,9 +58,13 @@ class CSVModel:
 		""" Save a dict of data to the CSV file. """
 
 		if rownum is not None:
-			# This is an update, new code here:
+			records = self.getAllRecords()
+			records[rownum] = data
+			with open(self.filename, 'w') as fh:
+				csvwriter = csv.DictWriter(fh, fieldnames=self.fields.keys())
+				csvwriter.writeheader()
+				csvwriter.writerows(records)
 		else:
-			#Old code goes here, indented one more level.
 			newfile = not os.path.exists(self.filename)
 
 			with open(self.filename, 'a') as fh:
